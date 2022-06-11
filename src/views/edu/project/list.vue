@@ -8,29 +8,29 @@
       <!-- 一级分类 -->
       <el-form-item label="课程类别">
         <el-select
-          v-model="searchObj.subjectParentId"
+          v-model="searchObj.menuFirstId"
           placeholder="请选择一级分类"
-          @change="subjectLevelOneChanged">
+          @change="menuLevelOneChanged">
           <el-option
-            v-for="subject in subjectNestedList"
-            :key="subject.id"
-            :label="subject.title"
-            :value="subject.id"/>
+            v-for="menu in menuNestedList"
+            :key="menu.id"
+            :label="menu.title"
+            :value="menu.id"/>
         </el-select>
 
         <!-- 二级分类 -->
-        <el-select v-model="searchObj.subjectId" placeholder="请选择二级分类">
+        <el-select v-model="searchObj.menuSecondId" placeholder="请选择二级分类">
           <el-option
-            v-for="subject in subSubjectList"
-            :key="subject.id"
-            :label="subject.title"
-            :value="subject.id"/>
+            v-for="menu in subMenuList"
+            :key="menu.id"
+            :label="menu.title"
+            :value="menu.id"/>
         </el-select>
       </el-form-item>
 
       <!-- 标题 -->
       <el-form-item>
-        <el-input v-model="searchObj.title" placeholder="课程标题"/>
+        <el-input v-model="searchObj.title" placeholder="项目标题"/>
       </el-form-item>
       <!-- 讲师 -->
       <el-form-item>
@@ -135,9 +135,9 @@
 
 </template>
 <script>
-import course from "../../../api/edu/course";
+import course from "../../../api/edu/project";
 import teacher from "../../../api/edu/teacher";
-import subject from "../../../api/edu/subject";
+import menu from "../../../api/edu/menu";
 import notification from "../../../api/element/notification";
 
 export default {
@@ -150,28 +150,27 @@ export default {
       page: 1, // 页码
       limit: 6, // 每页记录数
       searchObj: {
-        subjectParentId: '',
-        subjectId: '',
+        menuFirstId: '',
+        menuSecondId: '',
         title: '',
-        teacherId: ''
+        price: ''
       }, // 查询条件
       teacherList: [], // 讲师列表
-      subjectNestedList: [], // 一级分类列表
-      subSubjectList: [] // 二级分类列表,
+      menuNestedList: [], // 一级分类列表
+      subMenuList: [] // 二级分类列表,
     }
   },
 
   created() { // 当页面加载时获取数据
     this.fetchData()
     // 初始化分类列表
-    this.initSubjectList()
+    this.initMenuList()
     // 获取讲师列表
     this.initTeacherList()
   },
 
   methods: {
     fetchData(page = 1) { // 调用api层获取数据库中的数据
-      console.log('加载列表')
       console.log(this.searchObj);
       // 当点击分页组件的切换按钮的时候，会传输一个当前页码的参数page
       // 解决分页无效问题
@@ -194,18 +193,20 @@ export default {
         })
     },
 
-    initSubjectList() {
-      subject.getNestedTreeList()
+    initMenuList() {
+      menu.getNestedTreeList()
         .then(response => {
-          this.subjectNestedList = response.data.subjectList;
-        })
+          this.menuNestedList = response.data.subjectList;
+        }).catch(error => {
+        console.log(error)
+      })
     },
 
-    subjectLevelOneChanged(value) {
-      for (let i = 0; i < this.subjectNestedList.length; i++) {
-        if (this.subjectNestedList[i].id === value) {
-          this.subSubjectList = this.subjectNestedList[i].children
-          this.searchObj.subjectId = ''
+    menuLevelOneChanged(value) {
+      for (let i = 0; i < this.menuNestedList.length; i++) {
+        if (this.menuNestedList[i].id === value) {
+          this.subMenuList = this.menuNestedList[i].children
+          this.searchObj.menuSecondId = ''
         }
       }
     },

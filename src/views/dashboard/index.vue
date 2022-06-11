@@ -5,7 +5,9 @@
     <div class="dashboard-text">roles:<span v-for="role in roles" :key="role">{{ role }}</span></div>
   </div>
 
+
 </template>
+
 
 <script>
 import {mapGetters} from 'vuex'
@@ -20,6 +22,7 @@ export default {
   }
 }
 </script>
+
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .dashboard {
@@ -74,3 +77,4 @@ export default {
   padding: 5px 10px;
 }
 </style>
+

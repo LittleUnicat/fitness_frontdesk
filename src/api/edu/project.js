@@ -1,17 +1,18 @@
 import request from '@/utils/request'
 
 export default {
-  addCourse(courseInfo) {
+  addProject(project) {
     return request({
-      url: "/eduservice/course/",
+      url: "/fitness/project/",
       method: 'post',
-      data: courseInfo
+      data: project
     })
   },
 
-  getCourse(courseId) {
+  getProject(pid) {
+    console.log("pid:" + pid)
     return request({
-      url: `/eduservice/course/${courseId}`,
+      url: `/fitness/project/${pid}`,
       method: 'get',
     })
   },
@@ -32,17 +33,17 @@ export default {
 
   getPageList(page, limit, searchObj) {
     return request({
-      url: `/eduservice/course/${page}/${limit}`,
+      url: `/fitness/project/${page}/${limit}`,
       method: 'get',
       params: searchObj
     })
   },
 
-  updateCourse(courseInfo) {
+  updateProject(project) {
     return request({
-      url: "/eduservice/course/",
+      url: "/fitness/project/",
       method: 'put',
-      data: courseInfo
+      data: project
     })
   },
 
@@ -53,14 +54,14 @@ export default {
     })
   },
 
-  getPublishCourseInfo(courseId){
+  getPublishCourseInfo(courseId) {
     return request({
       url: `/eduservice/course/getPublishCourseInfo/${courseId}`,
       method: 'get'
     })
   },
 
-  publishCourse(courseId){
+  publishCourse(courseId) {
     return request({
       url: `/eduservice/course/publishCourse/${courseId}`,
       method: 'put'

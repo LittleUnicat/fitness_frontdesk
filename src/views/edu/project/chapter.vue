@@ -2,15 +2,15 @@
 
   <div class="app-container">
 
-    <h2 style="text-align: center;">发布新课程</h2>
+    <h2 style="text-align: center;">添加新项目</h2>
 
     <el-steps :active="2" process-status="wait" align-center style="margin-bottom: 40px;">
-      <el-step title="填写课程基本信息"/>
+      <el-step title="填写项目基本信息"/>
       <el-step title="创建课程大纲"/>
       <el-step title="提交审核"/>
     </el-steps>
 
-    <el-button type="text" @click="openAddChapterDialog">添加章节</el-button>
+    <el-button type="text" @click="openAddChapterDialog">添加项目</el-button>
 
 
     <!-- 章节 -->
@@ -75,9 +75,9 @@
             <el-radio :label="false">默认</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="上传视频">
-          <!-- TODO -->
-        </el-form-item>
+<!--        <el-form-item label="上传视频">-->
+<!--          &lt;!&ndash; TODO &ndash;&gt;-->
+<!--        </el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogVideoFormVisible = false">取 消</el-button>
@@ -127,7 +127,7 @@ export default {
         sort: 0
       },
       // ==================== 小节 ====================
-      saveVideoBtnDisabled: false, // 课时按钮是否禁用
+      saveVideoBtnDisabled: false, // 项目按钮是否禁用
       dialogVideoFormVisible: false, // 是否显示课时表单
       chapterId: '', // 课时所在的章节id
       video: {}
@@ -155,12 +155,12 @@ export default {
         .then(response => {
           this.chapterVideoList = response.data.allChapterVideo;
         }).catch(error => {
-        notification.errorNoti(this, "获取章节小节信息失败", error);
+        notification.errorNoti(this, '获取章节小节信息失败', error);
       })
     },
 
 
-    /* ================== 章节操作 ================== */
+    /* ================== 项目操作 ================== */
 
     // 新增章节,通过弹窗添加
     openAddChapterDialog() {

@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import subject from "../../../api/edu/subject";
+import subject from "../../../api/edu/menu";
 import notification from "../../../api/element/notification";
 
 export default {

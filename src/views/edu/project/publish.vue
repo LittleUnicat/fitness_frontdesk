@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import course from "../../../api/edu/course";
+import course from "../../../api/edu/project";
 import notification from "../../../api/element/notification";
 
 export default {

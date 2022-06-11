@@ -9,9 +9,9 @@ export default {
     })
   },
 
-  getCourse(courseId) {
+  gerProject(projectId) {
     return request({
-      url: `/eduservice/course/${courseId}`,
+      url: `/fitness/project/${projectId}`,
       method: 'get',
     })
   },

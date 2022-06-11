@@ -18,9 +18,8 @@ export default {
 
   getNestedTreeList() {
     return request({
-      url: "/eduservice/subject/getAllSubject",
+      url: "/fitness/menu/",
       method: 'get'
     })
-
   }
 }
