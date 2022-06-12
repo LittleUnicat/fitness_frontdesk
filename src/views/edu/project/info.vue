@@ -150,13 +150,9 @@ export default {
     next() {
       this.saveBtnDisabled = true;
       if (!this.projectInfo.id) {
-        this.saveData().catch(
-          notification.errorNoti(this, "保存失败", "数据未能保存")
-        )
+        this.saveData();
       } else {
-        this.updateData().catch(
-          notification.errorNoti(this, "更新失败", "数据未能更新")
-        )
+        this.updateData();
         this.saveBtnDisabled = false;
       }
     },
@@ -182,7 +178,7 @@ export default {
         notification.successNoti(this, "成功", "更新项目成功")
         return response// 将响应结果传递给then
       }).then(response => {
-        this.$router.push({path: '/project/chapter/' + this.courseId})
+        this.$router.push({path: '/project/chapter/' + this.projectId})
       }).catch((response) => {
         this.$message({
           type: 'error',
@@ -191,14 +187,14 @@ export default {
       })
     },
 
-    getListTeacher() {
-      course.getListTeacher()
-        .then(response => {
-          this.teacherList = response.data.items;
-        }).catch(error => {
-        notification.errorNoti(this, "获取讲师列表失败", error);
-      })
-    },
+    // getListTeacher() {
+    //   course.getListTeacher()
+    //     .then(response => {
+    //       this.teacherList = response.data.items;
+    //     }).catch(error => {
+    //     notification.errorNoti(this, "获取讲师列表失败", error);
+    //   })
+    // },
 
     menuLevelOneChanged(value) {
       for (let i = 0; i < this.menuNestedList.length; i++) {

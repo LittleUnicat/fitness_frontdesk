@@ -4,7 +4,7 @@ export default {
 
   addVideo(video) {
     return request({
-      url: `/eduservice/video/`,
+      url: `/fitness/video/`,
       method: 'post',
       data: video
     })
@@ -12,7 +12,7 @@ export default {
 
   updateVideo(video) {
     return request({
-      url: `/eduservice/video/`,
+      url: `/fitness/video/`,
       method: 'put',
       data: video
     })
@@ -20,14 +20,14 @@ export default {
 
   deleteVideo(videoId) {
     return request({
-      url: `/eduservice/video/${videoId}`,
+      url: `/fitness/video/${videoId}`,
       method: 'delete'
     })
   },
 
   getVideo(videoId) {
     return request({
-      url: `/eduservice/video/${videoId}`,
+      url: `/fitness/video/${videoId}`,
       method: 'get'
     })
   },

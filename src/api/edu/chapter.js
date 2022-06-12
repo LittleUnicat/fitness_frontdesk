@@ -1,16 +1,16 @@
 import request from '@/utils/request'
 
 export default {
-  getChapterVideo(courseId) {
+  getChapterVideo(projectId) {
     return request({
-      url: `/eduservice/chapter/getChapterVideo/${courseId}`,
+      url: `/fitness/chapter/getChapterVideo/${projectId}`,
       method: 'get'
     })
   },
 
   addChapter(chapter) {
     return request({
-      url: `/eduservice/chapter/`,
+      url: `/fitness/chapter/`,
       method: 'post',
       data: chapter
     })
@@ -18,7 +18,7 @@ export default {
 
   updateChapter(chapter) {
     return request({
-      url: `/eduservice/chapter/`,
+      url: `/fitness/chapter/`,
       method: 'put',
       data: chapter
     })
@@ -26,14 +26,14 @@ export default {
 
   deleteChapter(chapterId) {
     return request({
-      url: `/eduservice/chapter/${chapterId}`,
+      url: `/fitness/chapter/${chapterId}`,
       method: 'delete'
     })
   },
 
   getChapter(chapterId) {
     return request({
-      url: `/eduservice/chapter/${chapterId}`,
+      url: `/fitness/chapter/${chapterId}`,
       method: 'get'
     })
   },

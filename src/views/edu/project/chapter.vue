@@ -6,14 +6,14 @@
 
     <el-steps :active="2" process-status="wait" align-center style="margin-bottom: 40px;">
       <el-step title="填写项目基本信息"/>
-      <el-step title="创建课程大纲"/>
+      <el-step title="创建项目大纲"/>
       <el-step title="提交审核"/>
     </el-steps>
 
     <el-button type="text" @click="openAddChapterDialog">添加项目</el-button>
 
 
-    <!-- 章节 -->
+    <!-- 活动 -->
     <ul class="chanpterList">
       <li
         v-for="chapter in chapterVideoList"
@@ -22,7 +22,7 @@
           {{ chapter.title }}
 
           <span class="acts">
-                <el-button type="text" @click="openAddVideoDialog(chapter.id)">添加课时</el-button>
+                <el-button type="text" @click="openAddVideoDialog(chapter.id)">添加项目活动</el-button>
                 <el-button style="" type="text" @click="openUpdateChapterDialog(chapter.id)">编辑</el-button>
                 <el-button type="text" @click="deleteChapter(chapter.id)">删除</el-button>
             </span>
@@ -44,13 +44,13 @@
       </li>
     </ul>
 
-    <!-- 添加和修改章节表单 -->
-    <el-dialog :visible.sync="dialogChapterFormVisible" v-bind:title="dialogTitleSwitch?'添加章节':'编辑章节'">
+    <!-- 添加和修改活动表单 -->
+    <el-dialog :visible.sync="dialogChapterFormVisible" v-bind:title="dialogTitleSwitch?'添加活动':'编辑活动'">
       <el-form :model="chapter" label-width="120px">
-        <el-form-item label="章节标题">
+        <el-form-item label="活动标题">
           <el-input v-model="chapter.title"/>
         </el-form-item>
-        <el-form-item label="章节排序">
+        <el-form-item label="活动排序">
           <el-input-number v-model="chapter.sort" :min="0" controls-position="right"/>
         </el-form-item>
       </el-form>
@@ -101,12 +101,11 @@ import video from "../../../api/edu/video";
 
 const defaultVideoForm = {
   id: '',
-  courseId: '',
+  projectId: '',
   chapterId: '',
   title: '',
   sort: 0,
   isFree: 0,
-  videoSourceId: ''
 }
 
 export default {
@@ -114,55 +113,55 @@ export default {
 
   data() {
     return {
-      // ==================== 章节 ====================
+      // ==================== 活动 ====================
       saveBtnDisabled: false, // 保存按钮是否禁用
       chapterVideoList: [],
-      courseId: '',
+      projectId: '',
       dialogChapterFormVisible: false,
       dialogTitleSwitch: true,
       chapter: {
         id: '',
-        courseId: '',
+        projectId: '',
         title: '',
         sort: 0
       },
       // ==================== 小节 ====================
       saveVideoBtnDisabled: false, // 项目按钮是否禁用
       dialogVideoFormVisible: false, // 是否显示课时表单
-      chapterId: '', // 课时所在的章节id
+      chapterId: '', // 课时所在的活动id
       video: {}
     }
   },
 
   created() {
     if (this.$route.params && this.$route.params.id) {
-      this.courseId = this.$route.params.id;
+      this.projectId = this.$route.params.id;
       this.getChapterVideoList();
     }
   },
 
   methods: {
     previous() {
-      this.$router.push({path: '/course/info/' + this.courseId});
+      this.$router.push({path: '/project/info/' + this.projectId});
     },
 
     next() {
-      this.$router.push({path: '/course/publish/' + this.courseId});
+      this.$router.push({path: '/project/publish/' + this.projectId});
     },
 
     getChapterVideoList() {
-      chapter.getChapterVideo(this.courseId)
+      chapter.getChapterVideo(this.projectId)
         .then(response => {
           this.chapterVideoList = response.data.allChapterVideo;
         }).catch(error => {
-        notification.errorNoti(this, '获取章节小节信息失败', error);
+        notification.errorNoti(this, '获取活动小节信息失败', error);
       })
     },
 
 
     /* ================== 项目操作 ================== */
 
-    // 新增章节,通过弹窗添加
+    // 新增活动,通过弹窗添加
     openAddChapterDialog() {
       // 点击添加需要先清空chapter中内容
       this.chapter.title = '';
@@ -172,9 +171,9 @@ export default {
       this.dialogChapterFormVisible = true;
     },
 
-    //修改章节,弹框回显数据
+    //修改活动,弹框回显数据
     openUpdateChapterDialog(chapterId) {
-      // 调用接口获取点击的章节信息
+      // 调用接口获取点击的活动信息
       chapter.getChapter(chapterId)
         .then(response => {
           this.chapter = response.data.chapter;
@@ -186,8 +185,8 @@ export default {
 
 
     saveOrUpdateChapter() {
-      // 设置章节对应的课程id为当前页面课程的id
-      this.chapter.courseId = this.courseId;
+      // 设置活动对应的项目id为当前页面项目的id
+      this.chapter.projectId = this.projectId;
 
       if (!this.chapter.id) {
         this.addChapter()
@@ -204,7 +203,7 @@ export default {
           // 关闭弹窗
           this.dialogChapterFormVisible = false;
           // 提示
-          notification.successNoti(this, "成功", "添加章节成功");
+          notification.successNoti(this, "成功", "添加活动成功");
           // 刷新页面
           this.getChapterVideoList();
         })
@@ -214,20 +213,20 @@ export default {
       chapter.updateChapter(this.chapter)
         .then(response => {
           this.dialogChapterFormVisible = false;
-          notification.successNoti(this, "成功", "修改章节成功");
+          notification.successNoti(this, "成功", "修改活动成功");
           this.getChapterVideoList();
         })
     },
 
     deleteChapter(chapterId) {
-      this.$confirm('确认删除该章节?', '提示', {
+      this.$confirm('确认删除该活动?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         chapter.deleteChapter(chapterId)
           .then(response => {
-            notification.successNoti(this, "成功", "删除章节成功");
+            notification.successNoti(this, "成功", "删除活动成功");
             this.getChapterVideoList();
           }).catch(error => {
           notification.errorNoti(this, "失败", error.message);
@@ -244,7 +243,7 @@ export default {
       this.video = JSON.parse(JSON.stringify(defaultVideoForm));
 
       // 补全数据值
-      this.video.courseId = this.courseId;
+      this.video.projectId = this.projectId;
       this.video.chapterId = chapterId;
 
       this.dialogVideoFormVisible = true;

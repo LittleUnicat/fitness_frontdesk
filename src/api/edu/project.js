@@ -54,9 +54,9 @@ export default {
     })
   },
 
-  getPublishCourseInfo(courseId) {
+  getPublishInfo(projectId) {
     return request({
-      url: `/eduservice/course/getPublishCourseInfo/${courseId}`,
+      url: `/fitness/project/getPublishProjectInfo/${projectId}`,
       method: 'get'
     })
   },
