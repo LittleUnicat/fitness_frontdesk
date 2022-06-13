@@ -11,12 +11,12 @@ export default {
   },
 
 
-  getUserListPage(current, limit, teacherQuery) {
+  getUserListPage(current, limit, userQuery) {
     return request({
       // url: '/table/list',
-      url: `/eduservice/teachers/pageCondition/${current}/${limit}`,
+      url: `/fitness/pageCondition/${current}/${limit}`,
       method: 'post',
-      data: teacherQuery
+      data: userQuery
     })
   },
 

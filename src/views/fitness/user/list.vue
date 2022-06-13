@@ -6,21 +6,21 @@
       class="demo-form-inline">
       <el-form-item>
         <el-input
-          v-model="teacherQuery.name"
+          v-model="userQuery.username"
           clearable
           placeholder="用户名"/>
       </el-form-item>
 
       <el-form-item>
         <el-select
-          v-model="teacherQuery.level"
+          v-model="userQuery.role"
           clearable
-          placeholder="用户等级">
+          placeholder="用户身份">
           <el-option
-            :value="user"
+            value="user"
             label="客户"/>
           <el-option
-            :value="admin"
+            value="admin"
             label="管理员"/>
         </el-select>
       </el-form-item>
@@ -28,7 +28,7 @@
       <el-form-item label="添加时间">
         <el-date-picker
           clearable
-          v-model="teacherQuery.begin"
+          v-model="userQuery.begin"
           type="datetime"
           placeholder="选择开始时间"
           value-format="yyyy-MM-dd HH:mm:ss"
@@ -38,7 +38,7 @@
       <el-form-item>
         <el-date-picker
           clearable
-          v-model="teacherQuery.end"
+          v-model="userQuery.end"
           type="datetime"
           placeholder="选择截止时间"
           value-format="yyyy-MM-dd HH:mm:ss"
@@ -62,24 +62,31 @@
         width="180">
       </el-table-column>
       <el-table-column
-        prop="name"
-        label="姓名"
+        prop="avatar"
+        label="头像"
+        align="center"
+        width="220">
+        <template slot-scope="scope">
+          <div class="info">
+            <div class="pic">
+              <img :src="scope.row.avatar" alt="scope.row.title" width="100px">
+            </div>
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="username"
+        label="用户名"
         align="center"
         width="220">
       </el-table-column>
       <el-table-column
-        prop="career"
-        label="职业"
-        align="center"
-        width="220">
-      </el-table-column>
-      <el-table-column
-        prop="level"
-        label="等级"
+        prop="role"
+        label="身份"
         align="center"
       >
         <template slot-scope="scope">
-          LV{{ scope.row.level }}
+          {{ judgeRole(scope.row.role) }}
         </template>
       </el-table-column>
       <el-table-column
@@ -142,7 +149,13 @@ export default {
       page: 1,
       limit: 5,
       total: 0,
-      userQuery: {}
+      userQuery: {
+        avatar: '',
+        username: '',
+        role: '',
+        begin: '',
+        end: ''
+      }
     }
   },
   created() {
@@ -176,12 +189,12 @@ export default {
 
     removeTeacherById(row) {
       // 弹出消息框二次确认
-      this.$confirm(`删除教师${row.name}, 是否继续?`, '提示', {
+      this.$confirm(`删除用户${row.name}, 是否继续?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        // 点击确定，执行then，即删除教师
+        // 点击确定，执行then，即删除用户
         user.deleteTeacherById(row.id)
           .then(response => {
             notification.successNoti(this, `成功`, `删除${row.name}用户成功`);
@@ -195,6 +208,11 @@ export default {
       });
 
 
+    },
+
+    judgeRole(role) {
+      if (role === "admin") return "管理员"
+      return "客户"
     }
 
   },
