@@ -57,21 +57,21 @@ export const constantRouterMap = [{
       path: 'table',
       name: '讲师列表',
       component: () =>
-        import ('@/views/edu/teacher/list'),
+        import ('@/views/fitness/teacher/list'),
       meta: {title: '讲师列表', icon: 'table'}
     },
       {
         path: 'save',
         name: '添加讲师',
         component: () =>
-          import ('@/views/edu/teacher/save'),
+          import ('@/views/fitness/teacher/save'),
         meta: {title: '添加讲师', icon: 'tree'}
       },
       {
         path: 'edit/:id',
         name: '添加讲师',
         component: () =>
-          import ('@/views/edu/teacher/save'),
+          import ('@/views/fitness/teacher/save'),
         meta: {title: '编辑讲师', icon: 'tree'},
         hidden: true
       }
@@ -82,27 +82,27 @@ export const constantRouterMap = [{
     path: '/menu',
     component: Layout,
     redirect: '/menu/list',
-    name: '课程管理',
-    meta: {title: '课程管理', icon: 'example'},
+    name: '项目管理',
+    meta: {title: '项目管理', icon: 'example'},
     children: [{
       path: 'list',
-      name: '课程分类列表',
+      name: '项目分类列表',
       component: () =>
-        import ('@/views/edu/menu/list'),
-      meta: {title: '课程分类列表', icon: 'table'}
+        import ('@/views/fitness/menu/list'),
+      meta: {title: '项目分类列表', icon: 'table'}
     },
       {
         path: 'save',
-        name: '添加课程分类',
+        name: '添加项目分类',
         component: () =>
-          import ('@/views/edu/menu/save'),
-        meta: {title: '添加课程分类', icon: 'tree'}
+          import ('@/views/fitness/menu/save'),
+        meta: {title: '添加项目分类', icon: 'tree'}
       },
       {
         path: 'edit/:id',
         name: '添加讲师',
         component: () =>
-          import ('@/views/edu/teacher/save'),
+          import ('@/views/fitness/teacher/save'),
         meta: {title: '编辑讲师', icon: 'tree'},
         hidden: true
       }
@@ -113,42 +113,42 @@ export const constantRouterMap = [{
     path: '/project',
     component: Layout,
     redirect: '/project/list',
-    name: '课程管理',
-    meta: {title: '课程管理', icon: 'example'},
+    name: '项目管理',
+    meta: {title: '项目管理', icon: 'example'},
     children: [{
       path: 'list',
-      name: '课程列表',
+      name: '项目列表',
       component: () =>
-        import ('@/views/edu/project/list'),
-      meta: {title: '课程列表', icon: 'table'}
+        import ('@/views/fitness/project/list'),
+      meta: {title: '项目列表', icon: 'table'}
     },
       {
         path: 'info/',
-        name: '添加课程',
+        name: '添加项目',
         component: () =>
-          import('@/views/edu/project/info'),
-        meta: {title: '添加课程', icon: 'link'},
+          import('@/views/fitness/project/info'),
+        meta: {title: '添加项目', icon: 'link'},
       },
       {
         path: 'info/:id',
-        name: '添加课程',
+        name: '添加项目',
         component: () =>
-          import('@/views/edu/project/info'),
-        meta: {title: '添加课程', noCache: true},
+          import('@/views/fitness/project/info'),
+        meta: {title: '添加项目', noCache: true},
         hidden: true
       },
       {
         path: 'chapter/:id',
-        name: 'EduCourseChapterEdit',
-        component: () => import('@/views/edu/project/chapter'),
-        meta: {title: '编辑课程大纲', noCache: true},
+        name: 'FitnessProjectChapterEdit',
+        component: () => import('@/views/fitness/project/chapter'),
+        meta: {title: '编辑项目大纲', noCache: true},
         hidden: true
       },
       {
         path: 'publish/:id',
-        name: 'EduCoursePublishEdit',
-        component: () => import('@/views/edu/project/publish'),
-        meta: {title: '发布课程', noCache: true},
+        name: 'FitnessProjectPublishEdit',
+        component: () => import('@/views/fitness/project/publish'),
+        meta: {title: '发布项目', noCache: true},
         hidden: true
       }
     ]

@@ -2,6 +2,7 @@ import request from '@/utils/request'
 
 export default {
   addProject(project) {
+    console.log("addProject" + addProject)
     return request({
       url: "/fitness/project/",
       method: 'post',
@@ -17,16 +18,23 @@ export default {
     })
   },
 
-  deleteCourse(courseId) {
+  deleteProject(courseId) {
     return request({
-      url: `/eduservice/course/${courseId}`,
+      url: `/fitness/project/${courseId}`,
       method: 'delete'
     })
   },
 
-  getCourseList() {
+  getProjectList() {
     return request({
-      url: `/eduservice/course/`,
+      url: `/fitness/project/`,
+      method: 'get',
+    })
+  },
+
+  getPriceList() {
+    return request({
+      url: `/fitness/project/price`,
       method: 'get',
     })
   },
@@ -47,12 +55,12 @@ export default {
     })
   },
 
-  getListTeacher() {
-    return request({
-      url: '/eduservice/teachers/',
-      method: 'get'
-    })
-  },
+  // getListTeacher() {
+  //   return request({
+  //     url: '/eduservice/teachers/',
+  //     method: 'get'
+  //   })
+  // },
 
   getPublishInfo(projectId) {
     return request({
@@ -61,9 +69,9 @@ export default {
     })
   },
 
-  publishCourse(courseId) {
+  publishProject(projectId) {
     return request({
-      url: `/eduservice/course/publishCourse/${courseId}`,
+      url: `/fitness/project/publishProject/${projectId}`,
       method: 'put'
     })
   }

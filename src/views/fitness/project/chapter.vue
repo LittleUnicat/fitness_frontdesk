@@ -94,10 +94,10 @@
 </template>
 
 <script>
-import chapter from "../../../api/edu/chapter";
+import chapter from "../../../api/fitness/chapter";
 import notification from "../../../api/element/notification";
 import messageBox from "../../../api/element/messageBox";
-import video from "../../../api/edu/video";
+import video from "../../../api/fitness/video";
 
 const defaultVideoForm = {
   id: '',

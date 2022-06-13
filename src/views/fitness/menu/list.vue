@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import subject from "../../../api/edu/menu";
+import subject from "../../../api/fitness/menu";
 
 export default {
 

@@ -18,7 +18,7 @@
           :on-error="uploadError"
           :disabled="importBtnDisabled"
           :limit="limitNum"
-          :action="BASE_API+'/eduservice/subject/addSubject'"
+          :action="BASE_API+'/fitness/menu/addMenu'"
           name="file"
           accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
           <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import subject from "../../../api/edu/menu";
+import subject from "../../../api/fitness/menu";
 import notification from "../../../api/element/notification";
 
 export default {

@@ -14,9 +14,9 @@
       <img :src="projectPublishInfo.cover">
       <div class="main">
         <h2>{{ projectPublishInfo.title }}</h2>
-<!--        <p class="gray"><span>共{{ projectPublishInfo.lessonNum }}课时</span></p>-->
-        <p><span>所属分类：{{ projectPublishInfo.menuFirstId }} — {{ projectPublishInfo.subjectLevelTwo }}</span></p>
-<!--        <p>项目讲师：{{ projectPublishInfo.teacherName }}</p>-->
+        <!--        <p class="gray"><span>共{{ projectPublishInfo.lessonNum }}课时</span></p>-->
+        <p><span>所属分类：{{ projectPublishInfo.menuFirstTitle }} — {{ projectPublishInfo.menuSecondTitle }}</span></p>
+        <!--        <p>项目讲师：{{ projectPublishInfo.teacherName }}</p>-->
         <h3 class="red">￥{{ projectPublishInfo.price }}</h3>
       </div>
     </div>
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import project from "../../../api/edu/project";
+import project from "../../../api/fitness/project";
 import notification from "../../../api/element/notification";
 
 export default {
@@ -74,15 +74,15 @@ export default {
         .then(response => {
           this.projectPublishInfo = response.data.projectPublishInfo;
         }).catch(error => {
-          notification.errorNoti(this, "错误", "获取项目信息失败");
+        notification.errorNoti(this, "错误", "获取项目信息失败");
       })
     },
 
-    publishProject(){
+    publishProject() {
       project.publishProject(this.corseId)
-      .then(response => {
-        notification.successNoti(this, "成功", "项目发布成功");
-      }).catch(error => {
+        .then(response => {
+          notification.successNoti(this, "成功", "项目发布成功");
+        }).catch(error => {
         notification.errorNoti(this, "失败", "发布项目失败");
       })
     }

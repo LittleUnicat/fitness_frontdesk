@@ -35,14 +35,15 @@
       <!-- 讲师 -->
       <el-form-item>
         <el-select
-          v-model="searchObj.teacherId"
-          placeholder="请选择讲师">
+          v-model="searchObj.price"
+          placeholder="请选择价格">
           <el-option
-            v-for="teacher in teacherList"
-            :key="teacher.id"
-            :label="teacher.name"
-            :value="teacher.id"/>
+            v-for="price in priceList"
+            :key="price"
+            :label="price"
+            :value="priceFree(price)"/>
         </el-select>
+
       </el-form-item>
 
       <el-button type="primary" icon="el-icon-search" @click="fetchData()">查询</el-button>
@@ -76,7 +77,7 @@
             </div>
             <div class="title">
               <a href="">{{ scope.row.title }}</a>
-              <p>{{ scope.row.lessonNum }}课时</p>
+              <p>{{ scope.row.buyCount }}人购买</p>
             </div>
           </div>
 
@@ -109,10 +110,10 @@
 
       <el-table-column label="操作" width="150" align="center">
         <template slot-scope="scope">
-          <router-link :to="'/course/info/'+scope.row.id">
+          <router-link :to="'/project/info/'+scope.row.id">
             <el-button type="text" size="mini" icon="el-icon-edit">编辑课程信息</el-button>
           </router-link>
-          <router-link :to="'/course/chapter/'+scope.row.id">
+          <router-link :to="'/project/chapter/'+scope.row.id">
             <el-button type="text" size="mini" icon="el-icon-edit">编辑课程大纲</el-button>
           </router-link>
           <el-button type="text" size="mini" icon="el-icon-delete" @click="deleteCourse(scope.row)">删除课程信息
@@ -135,9 +136,9 @@
 
 </template>
 <script>
-import course from "../../../api/edu/project";
-import teacher from "../../../api/edu/teacher";
-import menu from "../../../api/edu/menu";
+import project from "../../../api/fitness/project";
+import teacher from "../../../api/fitness/teacher";
+import menu from "../../../api/fitness/menu";
 import notification from "../../../api/element/notification";
 
 export default {
@@ -155,7 +156,7 @@ export default {
         title: '',
         price: ''
       }, // 查询条件
-      teacherList: [], // 讲师列表
+      priceList: [], // 讲师列表
       menuNestedList: [], // 一级分类列表
       subMenuList: [] // 二级分类列表,
     }
@@ -166,7 +167,7 @@ export default {
     // 初始化分类列表
     this.initMenuList()
     // 获取讲师列表
-    this.initTeacherList()
+    this.initPriceList()
   },
 
   methods: {
@@ -176,7 +177,7 @@ export default {
       // 解决分页无效问题
       this.page = page
       this.listLoading = true
-      course.getPageList(this.page, this.limit, this.searchObj).then(response => {
+      project.getPageList(this.page, this.limit, this.searchObj).then(response => {
         // debugger 设置断点调试
         if (response.success === true) {
           this.list = response.data.rows
@@ -186,11 +187,18 @@ export default {
       })
     },
 
-    initTeacherList() {
-      teacher.getTeacherList()
+    initPriceList() {
+      project.getPriceList()
         .then(response => {
-          this.teacherList = response.data.items;
-        })
+          this.priceList = response.data.priceList;
+        }).catch(error => {
+        console.log(error)
+      })
+    },
+
+    priceFree(price){
+      if(price === 0) return "免费";
+      return price;
     },
 
     initMenuList() {
@@ -219,13 +227,13 @@ export default {
 
     deleteCourse(row) {
       // 弹出消息框二次确认
-      this.$confirm(`删除课程${row.title}, 是否继续?`, '提示', {
+      this.$confirm(`删除项目${row.title}, 是否继续?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         // 点击确定，执行then，即删除教师
-        course.deleteCourse(row.id)
+        project.deleteProject(row.id)
           .then(response => {
             notification.successNoti(this, `成功`, `删除${row.title}课程成功`);
             this.fetchData(this.page);

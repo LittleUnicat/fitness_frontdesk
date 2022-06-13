@@ -142,7 +142,7 @@
 </template>
 
 <script>
-import teacher from '../../../api/edu/teacher'
+import teacher from '../../../api/fitness/teacher'
 import notification from '../../../api/element/notification'
 import messageBox from "../../../api/element/messageBox";
 

@@ -108,7 +108,7 @@
 </template>
 
 <script>
-import teacherApi from "../../../api/edu/teacher";
+import teacherApi from "../../../api/fitness/teacher";
 import notification from "../../../api/element/notification";
 import ImageCropper from '../../../components/ImageCropper'
 import PanThumb from '../../../components/PanThumb'

@@ -78,7 +78,7 @@
           :on-success="handleAvatarSuccess"
           :on-error="handleAvatarError"
           :before-upload="beforeAvatarUpload"
-          :action="OSS_PATH+'/course/uploadCover'"
+          :action="OSS_PATH+'/project/uploadCover'"
           class="avatar-uploader">
           <img :src="projectInfo.cover">
         </el-upload>
@@ -94,10 +94,10 @@
   </div>
 </template>
 <script>
-import project from "../../../api/edu/project";
+import project from "../../../api/fitness/project";
 import notification from "../../../api/element/notification";
-import teacher from "../../../api/edu/teacher";
-import menu from "../../../api/edu/menu";
+import teacher from "../../../api/fitness/teacher";
+import menu from "../../../api/fitness/menu";
 import Tinymce from "../../../components/Tinymce"
 
 export default {
@@ -121,7 +121,7 @@ export default {
         cover: 'https://unicat.oss-cn-beijing.aliyuncs.com/fitness/default.png',
         price: 0,
       },
-      teacherList: [],
+      priceList: [],
       menuNestedList: [],
       subMenuList: []
     }
@@ -216,7 +216,7 @@ export default {
     handleAvatarSuccess(res, file) {
       console.log(res)// 上传响应
       console.log(URL.createObjectURL(file.raw))// base64编码
-      this.courseInfo.cover = res.data.url
+      this.projectInfo.cover = res.data.url
     },
 
     handleAvatarError() {
