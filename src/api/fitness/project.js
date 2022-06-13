@@ -2,7 +2,6 @@ import request from '@/utils/request'
 
 export default {
   addProject(project) {
-    console.log("addProject" + addProject)
     return request({
       url: "/fitness/project/",
       method: 'post',

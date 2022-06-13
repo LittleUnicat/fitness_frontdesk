@@ -11,7 +11,7 @@ export default {
   },
 
 
-  getTeacherListPage(current, limit, teacherQuery) {
+  getUserListPage(current, limit, teacherQuery) {
     return request({
       // url: '/table/list',
       url: `/eduservice/teachers/pageCondition/${current}/${limit}`,

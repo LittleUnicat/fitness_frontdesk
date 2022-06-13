@@ -48,31 +48,31 @@ export const constantRouterMap = [{
   },
 
   {
-    path: '/teacher',
+    path: '/user',
     component: Layout,
-    redirect: '/teacher/table',
-    name: '讲师管理',
-    meta: {title: '讲师管理', icon: 'example'},
+    redirect: '/user/table',
+    name: '用户管理',
+    meta: {title: '用户管理', icon: 'example'},
     children: [{
       path: 'table',
-      name: '讲师列表',
+      name: '用户列表',
       component: () =>
-        import ('@/views/fitness/teacher/list'),
-      meta: {title: '讲师列表', icon: 'table'}
+        import ('@/views/fitness/user/list'),
+      meta: {title: '用户列表', icon: 'table'}
     },
       {
         path: 'save',
-        name: '添加讲师',
+        name: '添加用户',
         component: () =>
-          import ('@/views/fitness/teacher/save'),
-        meta: {title: '添加讲师', icon: 'tree'}
+          import ('@/views/fitness/user/save'),
+        meta: {title: '添加用户', icon: 'tree'}
       },
       {
         path: 'edit/:id',
-        name: '添加讲师',
+        name: '添加用户',
         component: () =>
-          import ('@/views/fitness/teacher/save'),
-        meta: {title: '编辑讲师', icon: 'tree'},
+          import ('@/views/fitness/user/save'),
+        meta: {title: '编辑用户', icon: 'tree'},
         hidden: true
       }
     ]
@@ -82,28 +82,28 @@ export const constantRouterMap = [{
     path: '/menu',
     component: Layout,
     redirect: '/menu/list',
-    name: '项目管理',
-    meta: {title: '项目管理', icon: 'example'},
+    name: '菜单管理',
+    meta: {title: '菜单管理', icon: 'example'},
     children: [{
       path: 'list',
-      name: '项目分类列表',
+      name: '菜单列表',
       component: () =>
         import ('@/views/fitness/menu/list'),
-      meta: {title: '项目分类列表', icon: 'table'}
+      meta: {title: '菜单列表', icon: 'table'}
     },
       {
         path: 'save',
         name: '添加项目分类',
         component: () =>
           import ('@/views/fitness/menu/save'),
-        meta: {title: '添加项目分类', icon: 'tree'}
+        meta: {title: '添加菜单分类', icon: 'tree'}
       },
       {
         path: 'edit/:id',
-        name: '添加讲师',
+        name: '添加用户',
         component: () =>
-          import ('@/views/fitness/teacher/save'),
-        meta: {title: '编辑讲师', icon: 'tree'},
+          import ('@/views/fitness/user/save'),
+        meta: {title: '编辑用户', icon: 'tree'},
         hidden: true
       }
     ]

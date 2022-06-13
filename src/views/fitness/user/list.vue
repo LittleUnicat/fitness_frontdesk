@@ -8,32 +8,20 @@
         <el-input
           v-model="teacherQuery.name"
           clearable
-          placeholder="讲师名"/>
+          placeholder="用户名"/>
       </el-form-item>
 
       <el-form-item>
         <el-select
           v-model="teacherQuery.level"
           clearable
-          placeholder="讲师等级">
+          placeholder="用户等级">
           <el-option
-            :value="1"
-            label="LV1"/>
+            :value="user"
+            label="客户"/>
           <el-option
-            :value="2"
-            label="LV2"/>
-          <el-option
-            :value="3"
-            label="LV3"/>
-          <el-option
-            :value="4"
-            label="LV4"/>
-          <el-option
-            :value="5"
-            label="LV5"/>
-          <el-option
-            :value="6"
-            label="LV6"/>
+            :value="admin"
+            label="管理员"/>
         </el-select>
       </el-form-item>
 
@@ -142,7 +130,7 @@
 </template>
 
 <script>
-import teacher from '../../../api/fitness/teacher'
+import user from '../../../api/fitness/user'
 import notification from '../../../api/element/notification'
 import messageBox from "../../../api/element/messageBox";
 
@@ -154,7 +142,7 @@ export default {
       page: 1,
       limit: 5,
       total: 0,
-      teacherQuery: {}
+      userQuery: {}
     }
   },
   created() {
@@ -164,7 +152,7 @@ export default {
 
     getList(page = 1) {
       this.page = page;
-      teacher.getTeacherListPage(this.page, this.limit, this.teacherQuery)
+      user.getUserListPage(this.page, this.limit, this.userQuery)
         .then(response => {
           // 成功，保存数据
           this.list = response.data.rows;
@@ -182,7 +170,7 @@ export default {
     },
 
     resetData() {
-      this.teacherQuery = {};
+      this.userQuery = {};
       this.getList();
     },
 
@@ -194,13 +182,13 @@ export default {
         type: 'warning'
       }).then(() => {
         // 点击确定，执行then，即删除教师
-        teacher.deleteTeacherById(row.id)
+        user.deleteTeacherById(row.id)
           .then(response => {
-            notification.successNoti(this, `成功`, `删除${row.name}讲师成功`);
+            notification.successNoti(this, `成功`, `删除${row.name}用户成功`);
             this.getList(this.page);
           })
           .catch(error => {
-            notification.errorNoti(this, `失败`, `删除${row.name}讲师失败`);
+            notification.errorNoti(this, `失败`, `删除${row.name}用户失败`);
           })
       }).catch(() => {
         notification.infoNoti(this, `取消`, `已取消删除`);

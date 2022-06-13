@@ -77,7 +77,7 @@
             </div>
             <div class="title">
               <a href="">{{ scope.row.title }}</a>
-              <p>{{ scope.row.buyCount }}人购买</p>
+<!--              <p>{{ scope.row.buyCount }}人购买</p>-->
             </div>
           </div>
 
@@ -137,7 +137,7 @@
 </template>
 <script>
 import project from "../../../api/fitness/project";
-import teacher from "../../../api/fitness/teacher";
+import teacher from "../../../api/fitness/user";
 import menu from "../../../api/fitness/menu";
 import notification from "../../../api/element/notification";
 
@@ -196,8 +196,8 @@ export default {
       })
     },
 
-    priceFree(price){
-      if(price === 0) return "免费";
+    priceFree(price) {
+      if (price === 0) return "免费";
       return price;
     },
 

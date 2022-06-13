@@ -96,7 +96,7 @@
 <script>
 import project from "../../../api/fitness/project";
 import notification from "../../../api/element/notification";
-import teacher from "../../../api/fitness/teacher";
+import user from "../../../api/fitness/user";
 import menu from "../../../api/fitness/menu";
 import Tinymce from "../../../components/Tinymce"
 
@@ -155,6 +155,7 @@ export default {
         this.updateData();
         this.saveBtnDisabled = false;
       }
+      this.saveBtnDisabled = false;
     },
 
     // 保存
@@ -163,6 +164,7 @@ export default {
         notification.successNoti(this, "成功", "添加课程成功")
         return response// 将响应结果传递给then
       }).then(response => {
+        console.log(response.data.projectId)
         this.$router.push({path: '/project/chapter/' + response.data.projectId})
       }).catch((response) => {
         this.$message({

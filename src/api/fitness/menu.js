@@ -11,7 +11,7 @@ export default {
 
   getTemplate() {
     return request({
-      url: "/eduoss/fileoss/subjectTemplate",
+      url: "/fitnessOss/menuTemplate",
       method: 'get'
     })
   },
