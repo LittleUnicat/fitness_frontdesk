@@ -156,7 +156,7 @@ export default {
         title: '',
         price: ''
       }, // 查询条件
-      priceList: [], // 讲师列表
+      priceList: [], // 价格列表
       menuNestedList: [], // 一级分类列表
       subMenuList: [] // 二级分类列表,
     }
@@ -224,27 +224,6 @@ export default {
       this.subSubjectList = [] // 二级分类列表
       this.fetchData()
     },
-
-    deleteCourse(row) {
-      // 弹出消息框二次确认
-      this.$confirm(`删除项目${row.title}, 是否继续?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        // 点击确定，执行then，即删除教师
-        project.deleteProject(row.id)
-          .then(response => {
-            notification.successNoti(this, `成功`, `删除${row.title}课程成功`);
-            this.fetchData(this.page);
-          })
-          .catch(error => {
-            notification.errorNoti(this, `失败`, `删除${row.title}课程失败`);
-          })
-      }).catch(() => {
-        notification.infoNoti(this, `取消`, `已取消删除`);
-      });
-    }
   }
 }
 </script>

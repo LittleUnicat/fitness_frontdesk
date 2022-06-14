@@ -74,6 +74,14 @@ export const constantRouterMap = [{
           import ('@/views/fitness/user/save'),
         meta: {title: '编辑用户', icon: 'tree'},
         hidden: true
+      },
+      {
+        path: 'project/:id',
+        name: '编辑用户项目',
+        component: () =>
+          import ('@/views/fitness/user/userProject'),
+        meta: {title: '编辑用户', icon: 'tree'},
+        hidden: true
       }
     ]
   },

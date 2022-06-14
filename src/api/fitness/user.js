@@ -2,15 +2,6 @@ import request from '@/utils/request'
 
 export default {
 
-  getTeacherList() {
-    return request({
-      // url: '/table/list',
-      url: `/eduservice/teachers/`,
-      method: 'get'
-    })
-  },
-
-
   getUserListPage(current, limit, userQuery) {
     return request({
       // url: '/table/list',
@@ -20,33 +11,33 @@ export default {
     })
   },
 
-  deleteTeacherById(teacherId){
+  deleteUserById(userId){
     return request({
-      url: `/eduservice/teachers/${teacherId}`,
+      url: `/fitness/userInfo/${userId}`,
       method: 'delete'
     })
   },
 
-  addTeacher(teacher){
+  addUser(user){
     return request({
-      url: `/eduservice/teachers/`,
+      url: `/fitness/userInfo/`,
       method: 'post',
-      data: teacher
+      data: user
     })
   },
 
-  getTeacherInfo(id){
+  getUserInfo(id){
     return request({
-      url: `/eduservice/teachers/${id}`,
+      url: `/fitness/userInfo/${id}`,
       method: 'get'
     })
   },
 
-  updateTeacher(teacher){
+  updateUser(user){
       return request({
-        url: `/eduservice/teachers/`,
+        url: `/fitness/userInfo`,
         method: 'put',
-        data: teacher
+        data: user
       })
   }
 }

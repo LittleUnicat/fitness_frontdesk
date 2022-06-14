@@ -16,7 +16,7 @@ export default {
       fun.then(() => {
         that.$message({
           type: 'success',
-          message: '删除成功'
+          message: '成功'
         });
       }).catch(res => {
         that.$message({
@@ -27,7 +27,7 @@ export default {
     }).catch(() => {
       that.$message({
         type: 'info',
-        message: '已取消删除'
+        message: '已取消'
       });
     })
   }

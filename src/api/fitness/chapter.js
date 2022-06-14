@@ -1,9 +1,9 @@
 import request from '@/utils/request'
 
 export default {
-  getChapterVideo(projectId) {
+  getUserInfoList(projectId) {
     return request({
-      url: `/fitness/chapter/getChapterVideo/${projectId}`,
+      url: `/fitness/userProject/${projectId}`,
       method: 'get'
     })
   },

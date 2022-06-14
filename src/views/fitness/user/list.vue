@@ -99,21 +99,29 @@
         fixed="right"
         label="操作"
         align="center"
-        width="180">
+        width="280">
         <template
           slot-scope="scope">
           <!-- 修改的路由 -->
-          <router-link :to="'/teacher/edit/'+scope.row.id">
+          <router-link :to="'/user/edit/'+scope.row.id">
             <el-button
               @click="handleClick(scope.row.id)"
               type="text"
               size="small">
-              编辑
+              编辑用户信息
+            </el-button>
+          </router-link>
+
+          <router-link :to="'/user/project/'+scope.row.id">
+            <el-button
+              type="text"
+              size="small">
+              编辑用户课程
             </el-button>
           </router-link>
 
           <el-button
-            @click="removeTeacherById(scope.row)"
+            @click="removeUserById(scope.row)"
             type="text"
             size="small">
             删除
@@ -187,21 +195,21 @@ export default {
       this.getList();
     },
 
-    removeTeacherById(row) {
+    removeUserById(row) {
       // 弹出消息框二次确认
-      this.$confirm(`删除用户${row.name}, 是否继续?`, '提示', {
+      this.$confirm(`删除用户${row.username}, 是否继续?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         // 点击确定，执行then，即删除用户
-        user.deleteTeacherById(row.id)
+        user.deleteUserById(row.id)
           .then(response => {
-            notification.successNoti(this, `成功`, `删除${row.name}用户成功`);
+            notification.successNoti(this, `成功`, `删除${row.username}用户成功`);
             this.getList(this.page);
           })
           .catch(error => {
-            notification.errorNoti(this, `失败`, `删除${row.name}用户失败`);
+            notification.errorNoti(this, `失败`, `删除${row.username}用户失败`);
           })
       }).catch(() => {
         notification.infoNoti(this, `取消`, `已取消删除`);

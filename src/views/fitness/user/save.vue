@@ -1,28 +1,30 @@
 <template>
   <div class="app-container">
     <el-form
-      label-width="120px">
-      <!--讲师名称-->
+      label-width="120px"
+      :model="user"
+      status-icon
+      :rules="rules"
+      ref="ruleForm">
+      <!--用户名称-->
       <el-form-item
-        label="讲师名称">
+        label="用户名">
         <el-input
-          v-model="teacher.name"/>
+          v-model="user.username"/>
       </el-form-item>
 
-      <!--讲师排序-->
-      <el-form-item label="讲师排序">
-        <el-input-number
-          v-model="teacher.sort"
-          controls-position="right"
-          label-width="100"
-          :min="0"/>
+      <el-form-item label="密码" prop="password">
+        <el-input type="password" v-model="user.password"></el-input>
+      </el-form-item>
+      <el-form-item label="确认密码" prop="checkPassword">
+        <el-input type="password" v-model="user.checkPassword"></el-input>
       </el-form-item>
 
-      <!--讲师头衔/等级-->
+
       <el-form-item
-        label="讲师头衔">
+        label="用户身份">
         <el-select
-          v-model="teacher.level"
+          v-model="user.role"
           clearable
           placeholder="请选择">
           <!--
@@ -30,49 +32,20 @@
             因此，这里value使用动态绑定的值，保证其数据类型是number
           -->
           <el-option
-            :value="1"
-            label="LV1"/>
+            value="user"
+            label="客户"/>
           <el-option
-            :value="2"
-            label="LV2"/>
-          <el-option
-            :value="3"
-            label="LV3"/>
-          <el-option
-            :value="4"
-            label="LV4"/>
-          <el-option
-            :value="5"
-            label="LV5"/>
-          <el-option
-            :value="6"
-            label="LV6"/>
+            value="admin"
+            label="管理员"/>
         </el-select>
       </el-form-item>
 
-      <!--讲师资历/career-->
-      <el-form-item
-        label="讲师资历">
-        <el-input
-          v-model="teacher.career"/>
-      </el-form-item>
 
-      <!--讲师简介-->
-      <el-form-item
-        label="讲师简介">
-        <el-input
-          placeholder="这家伙很懒，什么都没有留下..."
-          v-model="teacher.intro"
-          :rows="10"
-          type="textarea"/>
-      </el-form-item>
-
-      <!-- 讲师头像：TODO  -->
-      <!-- 讲师头像 -->
-      <el-form-item label="讲师头像">
+      <!-- 用户头像 -->
+      <el-form-item label="用户头像">
 
         <!-- 头衔缩略图 -->
-        <pan-thumb :image="teacher.avatar"/>
+        <pan-thumb :image="user.avatar"/>
         <!-- 文件上传按钮 -->
         <el-button type="primary" icon="el-icon-upload" @click="imagecropperShow=true">更换头像
         </el-button>
@@ -88,7 +61,7 @@
           :width="300"
           :height="300"
           :key="imagecropperKey"
-          :url="BASE_API+'/eduoss/fileoss/headimg'"
+          :url="BASE_API+'/fitnessOss/headimg'"
           field="file"
           @close="closeBox"
           @crop-upload-success="cropSuccess"/>
@@ -108,32 +81,67 @@
 </template>
 
 <script>
-import teacherApi from "../../../api/fitness/user";
+import userApi from "../../../api/fitness/user";
 import notification from "../../../api/element/notification";
 import ImageCropper from '../../../components/ImageCropper'
 import PanThumb from '../../../components/PanThumb'
+import {getToken} from '../../../utils/auth'
+import {logout} from "../../../api/login";
+import messageBox from "../../../api/element/messageBox";
 
 export default {
-  components: { ImageCropper, PanThumb },
+  components: {ImageCropper, PanThumb},
 
   data() {
+
+
+    var validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'));
+      } else {
+        if (this.user.checkPassword !== '') {
+          this.$refs.ruleForm.validateField('checkPassword');
+        }
+        callback();
+      }
+    };
+    var validatePass2 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'));
+      } else if (value !== this.user.password) {
+        callback(new Error('两次输入密码不一致!'));
+      } else {
+        callback();
+      }
+    };
+
     return {
-      teacher: {
-        name: '',
-        intro: '',
-        sort: 0,
-        level: null,
-        career: '',
+      user: {
+        id: '',
+        username: '',
+        password: '',
+        checkPassword: '',
+        role: '',
         avatar: ''
       },
       saveBtnDisabled: false,     // 保存按钮当前是否可点击（防止多次操作）
       imagecropperShow: false,    // 默认是否打开文件上传弹弹窗
       imagecropperKey: 0,         // 上传组件id
       BASE_API: process.env.BASE_API, // 接口API地址
+
+
+      rules: {
+        password: [
+          {validator: validatePass, trigger: 'blur'}
+        ],
+        checkPassword: [
+          {validator: validatePass2, trigger: 'blur'}
+        ]
+      }
     }
+
   },
   created() { // 页面渲染之前进行
-    console.log("created");
     this.init();
   },
 
@@ -149,32 +157,53 @@ export default {
       if (this.$route.params && this.$route.params.id) {  // 有id，做修改操作
         const id = this.$route.params.id;
         this.getInfo(id);
-      } else {  // 无id，清空teacher数据做添加操作
-        this.teacher = {};
+      } else {  // 无id，清空user数据做添加操作
+        this.user = {};
       }
     },
 
+    submitForm(formName) {
+      console.log("submitForm")
+      this.$refs[formName].validate((valid) => {
+        console.log("valid:" + valid)
+        if (valid) {
+          this.doSaveOrUpdate();
+        } else {
+          notification.errorNoti(this, "保存失败", "表单有误，请检查表单")
+          this.saveBtnDisabled = false;
+        }
+      });
+
+    },
+
     saveOrUpdate() {
+
       this.saveBtnDisabled = true;
 
-      // 有id则更新
-      if (this.teacher.id) {
-        this.updateTeacherInfo();
-      } else {  //无则添加
-        this.saveTeacher();
-      }
+      this.submitForm('ruleForm');
 
       this.saveBtnDisabled = false;
     },
 
+    doSaveOrUpdate() {
+      console.log("doSaveOrUpdate")
+      // 有id则更新
+      if (this.user.id) {
+        console.log("updateUserInfo")
+        this.updateUserInfo();
+      } else {  //无则添加
+        this.saveUser();
+      }
+    },
+
     // 保存
-    saveTeacher() {
-      teacherApi.addTeacher(this.teacher)
+    saveUser() {
+      userApi.addUser(this.user)
         .then(response => { // 添加成功
           // 提示信息
-          notification.successNoti(this, "成功", `添加${this.teacher.name}教师成功`);
+          notification.successNoti(this, "成功", `添加${this.user.username}用户成功`);
           // 回到列表页面，使用路由跳转
-          this.$router.push({path: '/teacher/table'})
+          this.$router.push({path: '/user/table'})
         }).catch(error => {
         notification.errorNoti(this, "失败", "添加失败");
       }).catch(error => {
@@ -184,22 +213,65 @@ export default {
 
     // 修改时获取用户原数据并保存
     getInfo(id) {
-      teacherApi.getTeacherInfo(id)
+      userApi.getUserInfo(id)
         .then(response => {
-          this.teacher = response.data.teacher;
+          this.user = response.data.user;
         }).catch(error => {
         this.$message.error(error);
       })
     },
 
     // 更新数据
-    updateTeacherInfo() {
-      teacherApi.updateTeacher(this.teacher)
+    updateUserInfo() {
+      if (this.user.id === getToken()) {
+        this.$confirm("继续操作将登出，是否确认？", "修改用户为当前登录用户", {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.doUpdateUserInfo().then(() => {
+            this.$message({
+              type: 'success',
+              message: '成功'
+            });
+          }).catch(res => {
+            this.$message({
+              type: "error",
+              message: "未知错误"
+            })
+          })
+        }).catch(() => {
+        })
+
+      } else {
+        this.doUpdateUserInfo().then(() => {
+          this.$message({
+            type: 'success',
+            message: '成功'
+          });
+        }).catch(res => {
+          this.$message({
+            type: "error",
+            message: "未知错误"
+          })
+        })
+      }
+
+    },
+
+    doUpdateUserInfo() {
+      userApi.updateUser(this.user)
         .then(response => { // 添加成功
           // 提示信息
-          notification.successNoti(this, "成功", `修改${this.teacher.name}教师成功`);
+          notification.successNoti(this, "成功", `修改${this.user.username}用户成功`);
+          if (this.user.id === getToken()) {
+            // 自己的账户被修改的时候重新登陆
+            this.$store.dispatch('LogOut').then(() => {
+              location.reload() // 为了重新实例化vue-router对象 避免bug
+            })
+          }
           // 回到列表页面，使用路由跳转
-          this.$router.push({path: '/teacher/table'})
+          this.$router.push({path: '/user/table'})
         }).catch(error => {
         notification.errorNoti(this, "失败", "修改失败");
       }).catch(error => {
@@ -208,19 +280,21 @@ export default {
     },
 
     // 文件上传：关闭弹窗
-    closeBox(){
+    closeBox() {
       this.imagecropperShow = false;
       this.imagecropperKey = this.imagecropperKey + 1;
     },
 
     // 文件上传：上传成功返回url
-    cropSuccess(data){
+    cropSuccess(data) {
       // 返回图片地址
-      this.teacher.avatar = data.url;
+      this.user.avatar = data.url;
       // 关弹窗
       this.imagecropperShow = false;
       this.imagecropperKey = this.imagecropperKey + 1;
-    }
+    },
+
+
   }
 
 }
