@@ -2,7 +2,8 @@
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on"
              label-position="left">
-      <h3 class="title">vue-admin-template</h3>
+      <img src="static/img/sdau.png" style="height: 170px">
+      <h3 class="title">Uni健身项目在线</h3>
       <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user"/>
@@ -26,12 +27,13 @@
       </el-form-item>
       <el-form-item>
         <el-button :loading="loading" type="primary" style="width:100%;" @click.native.prevent="handleLogin">
-          Sign in
+          登录
         </el-button>
       </el-form-item>
       <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: admin</span>
+        <div style="color: gold; font-size: 16px">我的GitHub-></div>
+        <a href="https://github.com/LittleUnicat/fitness_backdesk">后端项目</a>
+        <a href="https://github.com/LittleUnicat/fitness_frontdesk">前端项目</a>
       </div>
     </el-form>
   </div>
@@ -39,9 +41,11 @@
 
 <script>
 import {isvalidUsername} from '@/utils/validate'
+import Link from "../layout/components/Sidebar/Link";
 
 export default {
   name: 'Login',
+  components: {Link},
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!isvalidUsername(value)) {
@@ -94,7 +98,7 @@ export default {
 
           this.$store.dispatch('Login', this.loginForm).then(() => {
             this.loading = false
-            this.$router.push({ path: this.redirect || '/' })
+            this.$router.push({path: this.redirect || '/'})
           }).catch(() => {
             this.loading = false
           })
@@ -170,6 +174,8 @@ $light_gray: #eee;
     font-size: 14px;
     color: #fff;
     margin-bottom: 10px;
+    display: flex;
+    justify-content: space-evenly;
 
     span {
       &:first-of-type {

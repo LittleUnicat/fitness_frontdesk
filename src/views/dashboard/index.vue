@@ -2,15 +2,23 @@
 
 
   <div class="dashboard-container">
+
+    <el-page-header @back="console.log('done')" content="详情页面">
+    </el-page-header>
+
     <div style="margin-bottom: 50px">
       <el-carousel :interval="4000" type="card" height="300px">
         <el-carousel-item v-for="item in list" :key="item.id">
           <img :src="item.cover" :alt="item.title">
-          <h3 style="color: wheat">{{ list.title }}</h3>
+          <h3 style="color: white">{{ item.title }}</h3>
         </el-carousel-item>
       </el-carousel>
     </div>
 
+
+    <p class="myWord">
+      <b>核心用户</b>
+    </p>
     <div>
       <el-row class="mycard">
         <el-col :span="4" v-for="(user, index) in userList" :key="user.id" :offset="index > 0 ? 2 : 0">
@@ -251,6 +259,13 @@ export default {
 .mycard {
   display: flex;
   justify-content: center;
+}
+
+.myWord {
+  font-family: "PingFang SC", serif;
+  font-size: 30px;
+  color: gold;
+  margin: 30px;
 }
 </style>
 
