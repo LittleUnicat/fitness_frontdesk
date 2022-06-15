@@ -2,6 +2,20 @@ import request from '@/utils/request'
 
 export default {
 
+  getAllUser() {
+    return request({
+      url: `/fitness/`,
+      method: 'get',
+    })
+  },
+
+  getRandom4User(num) {
+    return request({
+      url: `/fitness/getRandom4User/${num}`,
+      method: 'get',
+    })
+  },
+
   getUserListPage(current, limit, userQuery) {
     return request({
       // url: '/table/list',
@@ -11,14 +25,14 @@ export default {
     })
   },
 
-  deleteUserById(userId){
+  deleteUserById(userId) {
     return request({
       url: `/fitness/userInfo/${userId}`,
       method: 'delete'
     })
   },
 
-  addUser(user){
+  addUser(user) {
     return request({
       url: `/fitness/userInfo/`,
       method: 'post',
@@ -26,18 +40,18 @@ export default {
     })
   },
 
-  getUserInfo(id){
+  getUserInfo(id) {
     return request({
       url: `/fitness/userInfo/${id}`,
       method: 'get'
     })
   },
 
-  updateUser(user){
-      return request({
-        url: `/fitness/userInfo`,
-        method: 'put',
-        data: user
-      })
+  updateUser(user) {
+    return request({
+      url: `/fitness/userInfo`,
+      method: 'put',
+      data: user
+    })
   }
 }

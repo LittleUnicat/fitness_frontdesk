@@ -3,40 +3,49 @@
 
   <div class="dashboard-container">
     <div style="margin-bottom: 50px">
-      <el-carousel :interval="4000" type="card" height="400px">
-        <el-carousel-item v-for="item in 6" :key="item">
-          <h3 class="medium">{{ item }}</h3>
+      <el-carousel :interval="4000" type="card" height="300px">
+        <el-carousel-item v-for="item in list" :key="item.id">
+          <img :src="item.cover" :alt="item.title">
+          <h3 style="color: wheat">{{ list.title }}</h3>
         </el-carousel-item>
       </el-carousel>
     </div>
 
     <div>
       <el-row class="mycard">
-        <el-col :span="6" v-for="(o, index) in 3" :key="o" :offset="index > 0 ? 2 : 0">
-          <el-card shadow="hover" :body-style="{ padding: '0px' }">
-            <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-                 class="image">
-            <div style="padding: 14px;">
-              <span>好吃的汉堡</span>
-              <div class="bottom clearfix">
-                <time class="time">{{ currentDate }}</time>
-                <el-button type="text" class="button">操作按钮</el-button>
+        <el-col :span="4" v-for="(user, index) in userList" :key="user.id" :offset="index > 0 ? 2 : 0">
+
+          <router-link :to="'/user/project/'+user.id">
+
+            <el-card shadow="hover" :body-style="{ padding: '0px' }">
+              <img :src=user.avatar
+                   class="image"
+                   fit="cover">
+              <div style="padding: 14px;">
+              <span>
+                {{ user.username }}
+              </span>
+                <div class="bottom clearfix">
+
+                  <el-tag
+                    :key="user.role === 'admin' ? '管理员' : '客户' "
+                    :type=getTagType(user.role)>
+                    {{ user.role === 'admin' ? '管理员' : '客户' }}
+                  </el-tag>
+                </div>
               </div>
-            </div>
-          </el-card>
+            </el-card>
+
+          </router-link>
+
+
         </el-col>
       </el-row>
     </div>
 
     <div>
-      <div class="dashboard-text">name:{{ name }}</div>
-      <div class="dashboard-text">roles:<span v-for="role in roles" :key="role">{{ role }}</span></div>
-    </div>
-
-    <div>
-      <el-backtop target=".page-component__scroll .el-scrollbar__wrap" :bottom="40">
-        <div
-          style="{
+      <div
+        style="{
         height: 100%;
         width: 100%;
         margin-top: 50px;
@@ -46,10 +55,9 @@
         line-height: 40px;
         color: #1989fa;
       }"
-        >
-          已经到底啦，再怎么拉也没有了(っ °Д °;)っ
-        </div>
-      </el-backtop>
+      >
+        已经到底啦，再怎么拉也没有了(っ °Д °;)っ
+      </div>
     </div>
 
   </div>
@@ -60,6 +68,8 @@
 
 <script>
 import {mapGetters} from 'vuex'
+import project from "../../api/fitness/project";
+import user from "../../api/fitness/user";
 
 export default {
   name: 'Dashboard',
@@ -70,9 +80,69 @@ export default {
     ])
   },
   data() {
+
     return {
+      listLoading: true, // 是否显示loading信息
+      list: [{
+        id: '',
+        title: '',
+        cover: '',
+        price: '',
+      }], // 数据列表
+      userList: [{
+        username: '',
+        avatar: '',
+        role: ''
+      }],
+      total: 0, // 总记录数
+      page: 1, // 页码
+      limit: 6, // 每页记录数
+      searchObj: {
+        menuFirstId: '',
+        menuSecondId: '',
+        title: '',
+        price: ''
+      }, // 查询条件
       currentDate: new Date()
     };
+  },
+
+  created() {
+    this.fetchData();
+    this.getUserList();
+  },
+
+  methods: {
+
+    fetchData() { // 调用api层获取数据库中的数据
+      this.listLoading = true
+      project.getProjectList().then(response => {
+        // debugger 设置断点调试
+        if (response.success === true) {
+          this.list = response.data.projects
+        }
+        this.listLoading = false
+      })
+    },
+
+    getUserList() {
+      user.getRandom4User(4)
+        .then(response => {
+          // 成功，保存数据
+          this.userList = response.data.items;
+        })
+        .catch(error => {
+          // 失败
+          console.log(error);
+        })
+    },
+
+    getTagType(role) {
+      if (role === 'admin') return 'success'
+      return ''
+    }
+
+
   }
 }
 </script>
